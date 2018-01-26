@@ -3,7 +3,8 @@ import pymongo
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 
 app = Flask(__name__)
-app.config.from_envvar('FLASKR_SETTINGS', silent = True)
+app.config.from_envvar('FLASKR_SETTINGS', silent=True)
+app.DEBUG = True
 
 
 def connect_db():

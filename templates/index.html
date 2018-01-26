@@ -9,11 +9,11 @@
                     <ul>
                         {% for diary in diaries %}
                             <div id="diary-info" class="list-group-item">
-                                    <small>[心情:{{ diary.pub_date }}]</small>
-                                </h5>
-                                <p id="diary-content">{{ diary.article }}</p>
+                                <h4>{{ diary.title }}</h4>
                                 <small id="diary-time">{{ diary.pub_date }}</small>
+                                <p id="diary-content">{{ diary.article }}</p>
                             </div>
+                            <hr>
                         {% endfor %}
                     </ul>
                 {% else %}

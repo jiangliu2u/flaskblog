@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>日记</title>
+{#    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">#}
+{#    <link rel="stylesheet" href="{% static 'css/style.css' %}">#}
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand">日记</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li><a href="/diary/">首页</a></li>
+                    {% if username %}
+                        <li><a href="/diary/{{username }}">{{ username }}</a></li>
+                        <li><a href="/diary/postPage">写日记</a></li>
+                        <li><a href="/diary/logout">退出</a></li>
+                    {% else %}
+                        <li><a href="/diary/logina">登录</a></li>
+                        <li><a href="/diary/regPage">注册</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+{% block content %}{% endblock %}
+</body>
+</html>

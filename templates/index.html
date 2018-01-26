@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-7">
+                {% if diaries %}
+                    <ul>
+                        {% for diary in diaries %}
+                            <div id="diary-info" class="list-group-item">
+                                    <small>[心情:{{ diary.pub_date }}]</small>
+                                </h5>
+                                <p id="diary-content">{{ diary.article }}</p>
+                                <small id="diary-time">{{ diary.pub_date }}</small>
+                            </div>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No diaries are available.</p>
+                {% endif %}
+            </div>
+            <div class="col-lg-4"></div>
+        </div>
+    </div>
+{% endblock %}

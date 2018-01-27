@@ -1,34 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>博客</title>
-{#    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">#}
-{#    <link rel="stylesheet" href="{% static 'css/style.css' %}">#}
-</head>
-<body>
-<div class="container">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand">博客</a>
-            </div>
-            <div>
-                <ul class="nav navbar-nav">
-                    <li><a href="/diary/">首页</a></li>
-                    {% if username %}
-                        <li><a href="/diary/{{username }}">{{ username }}</a></li>
-                        <li><a href="/diary/postPage">写博客</a></li>
-                        <li><a href="/diary/logout">退出</a></li>
-                    {% else %}
-                        <li><a href="/diary/logina">登录</a></li>
-                        <li><a href="/diary/regPage">注册</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
+<!doctype html>
+<title>Flaskr</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<div class=page>
+  <h1>Flaskr</h1>
+  <div class=metanav>
+  {% if not session.logged_in %}
+    <a href="{{ url_for('login') }}">log in</a>
+  {% else %}
+    <a href="{{ url_for('logout') }}">log out</a>
+  {% endif %}
+  </div>
+  {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+  {% endfor %}
+  {% block body %}{% endblock %}
 </div>
-{% block content %}{% endblock %}
-</body>
-</html>

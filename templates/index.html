@@ -1,26 +1,23 @@
 {% extends "layout.html" %}
 
-{% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-1"></div>
-            <div class="col-lg-7">
-                {% if diaries %}
-                    <ul>
-                        {% for diary in diaries %}
-                            <div id="diary-info" class="list-group-item">
-                                <h4>{{ diary.title }}</h4>
-                                <small id="diary-time">{{ diary.pub_date }}</small>
-                                <p id="diary-content">{{ diary.article }}</p>
-                            </div>
-                            <hr>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>No diaries are available.</p>
-                {% endif %}
-            </div>
-            <div class="col-lg-4"></div>
+{% block body %}
+    <div>
+        <div></div>
+        <div>
+            {% if diaries %}
+                <ul>
+                    {% for diary in diaries %}
+                        <div id=blog>
+                            <h4 id="title">{{ diary.title }}</h4>
+                            <small id=diary-time>{{ diary.pub_date }}</small>
+                            <p id=diary-content>{{ diary.article }}</p>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No diaries are available.</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

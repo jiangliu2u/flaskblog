@@ -1,6 +1,8 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from pymongo import MongoClient
 from flask_login import UserMixin
+from flask_mongoengine import MongoEngine
+
+mongo = MongoEngine()
 
 
 class User(UserMixin):
@@ -8,7 +10,6 @@ class User(UserMixin):
         self.username = username
         self.password = password
         # self.id = self.get_id()
-        self.db = MongoClient('127.0.0.1', 27017).flask.user
 
     @property
     def password(self):
@@ -30,5 +31,14 @@ class User(UserMixin):
         self.db.insert(info)
 
     @classmethod
-    def find_user_by_username(self,username):
+    def find_user_by_username(self, username):
         return self.db.find_one({"username": username})
+
+
+class Blog(mongo.Document):
+    username = mongo.StringField(required=True)
+    weibo_content = mongo.StringField(required=True)
+    pub_date = mongo.DateTimeField()
+    meta = {
+        'collection': 'weibo'
+    }

@@ -8,9 +8,9 @@
                 <ul>
                     {% for diary in diaries %}
                         <div id=blog>
-                            <h4 id="title">{{ diary.title }}</h4>
+                            <h4 id="title">{{ diary.username }}</h4>
                             <small id=diary-time>{{ diary.pub_date }}</small>
-                            <p id=diary-content>{{ diary.article }}</p>
+                            <p id=diary-content>{{ diary.weibo_content }}</p>
                         </div>
                         <hr>
                     {% endfor %}

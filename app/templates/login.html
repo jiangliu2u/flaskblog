@@ -3,7 +3,7 @@
   <h2>Login</h2>
   {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
       
-  <form action="{{ url_for('login') }}" method=post>
+  <form action="{{ url_for('blog.login') }}" method=post>
     {{form.username.lable}}{{form.username()}}
     {{form.password.lable}}{{form.password()}}
       {{form.submit}}

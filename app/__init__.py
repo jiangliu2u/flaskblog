@@ -5,7 +5,8 @@ login_manager = LoginManager()
 login_manager.login_message = 'Unauthorized User'
 login_manager.login_message_category = "info"
 login_manager.session_protection = 'strong'
-from . import models
+from app.models import mongo
+from app.extensions import bcrypt
 
 def create_app(config_name):
     from flask import Flask
@@ -13,6 +14,7 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
     login_manager.init_app(app)
-    models.mongo.init_app(app)
+    mongo.init_app(app)
+    bcrypt.init_app(app)
     app.register_blueprint(blog.blog_blueprint)
     return app

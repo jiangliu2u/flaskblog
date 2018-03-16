@@ -1,11 +1,22 @@
 {% extends "layout.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% block title %}
+    发微博
+{% endblock %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
 {% block content %}
     <div class="container">
     {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
     <div class="col-md-4">
         <form class="form form-horizontal" action='{{ url_for('main.new_post') }}' method='POST'>
-            <label>发微博~</label>
             {{ form.hidden_tag() }}
             {{ wtf.form_errors(form, hiddens="only") }}
             {{ wtf.form_field(form.content) }}

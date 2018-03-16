@@ -10,6 +10,7 @@ login_manager.login_message = 'Unauthorized User'
 login_manager.login_message_category = "info"
 login_manager.session_protection = 'strong'
 
+
 def create_app(config_name):
     from flask import Flask
     app = Flask(__name__)
@@ -21,6 +22,7 @@ def create_app(config_name):
     app.register_blueprint(blog.blog_blueprint)
     app.register_blueprint(main.main_blueprint)
     return app
+
 
 @login_manager.user_loader
 def load_user(username):

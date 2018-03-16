@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
-
-{% block body %}
-    {{super()}}
+{% block title %}
+    首页
+{% endblock %}
+{% block content %}
+    {{ super() }}
     <div>
         <div></div>
         <div>
@@ -9,9 +11,9 @@
                 <ul>
                     {% for diary in diaries %}
                         <div id=blog>
-                            <h4 id="title">{{ diary.username }}</h4>
-                            <small id=diary-time>{{ diary.pub_date }}</small>
-                            <p id=diary-content>{{ diary.weibo_content }}</p>
+                            <h4 id="title">{{ diary.author.username }}</h4>
+                            <small id=diary-time>{{ diary.create_time }}</small>
+                            <p id=diary-content>{{ diary.content }}</p>
                         </div>
                         <hr>
                     {% endfor %}

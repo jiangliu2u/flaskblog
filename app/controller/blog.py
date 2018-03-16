@@ -1,15 +1,12 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from app.models import Blog, User
-from flask_login import login_user, current_user, fresh_login_required
+from flask_login import login_user, current_user, fresh_login_required, logout_user
 from app.form import login_form, reg_form
 
 blog_blueprint = Blueprint('blog', __name__)
 
 
-
-
-
-@blog_blueprint.route('/login', methods = ['GET','POST'])
+@blog_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     form = login_form(request.form)
     if request.method == 'POST':
@@ -18,7 +15,7 @@ def login():
             if user is not None and user.check_password(form.password.data):
                 user.authenticated = True
                 user.save()
-                login_user(user) # remember=True
+                login_user(user)  # remember=True
                 flash('Thanks for logging in, {}'.format(current_user.username))
                 print(current_user.username)
                 return redirect(url_for('main.index'))
@@ -26,8 +23,7 @@ def login():
     return render_template('login.html', form=form)
 
 
-
-@blog_blueprint.route('/reg', methods = ['GET', 'POST'])
+@blog_blueprint.route('/reg', methods=['GET', 'POST'])
 def register():
     form = reg_form(request.form)
     if request.method == 'POST':
@@ -37,7 +33,18 @@ def register():
             print(new_user.password_hash)
             new_user.save()
             return redirect(url_for("main.index"))
-    
-    return render_template('register.html', form = form)
-        
-    
+
+    return render_template('register.html', form=form)
+
+
+@blog_blueprint.route('/logout')
+def logout():
+    user = current_user
+    if current_user.is_authenticated:
+        user.authenticated = False
+        user.save()
+        logout_user()
+        flash('You have been logged out.')
+    elif not current_user.is_autheticated:
+        flash('You were not logged in.')
+    return redirect(url_for('main.index'))

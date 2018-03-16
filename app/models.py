@@ -49,7 +49,7 @@ class Blog(mongo.Document):
     meta = {
         'collection': 'post'
     }
-    #blog_id = mongo.StringField(max_length=250, required=True)  # use uuid4
+    # blog_id = mongo.StringField(max_length=250, required=True)  # use uuid4
     content = mongo.StringField(required=True)
     author = mongo.ReferenceField(User, reverse_delete_rule=CASCADE)
     create_time = mongo.DateTimeField(default=datetime.now)

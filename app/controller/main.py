@@ -9,7 +9,7 @@ main_blueprint = Blueprint('main', __name__)
 
 @main_blueprint.route('/')
 def index():
-    diaries = Blog.objects.all().order_by('pub_date')
+    diaries = Blog.objects.all().order_by('-create_time')
     return render_template('index.html', diaries=diaries)
 
 

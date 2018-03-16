@@ -1,28 +1,32 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from flask_mongoengine import MongoEngine
-from app.extensions import bcrypt
+
+
 mongo = MongoEngine()
 
 
 class User(mongo.Document):
     username = mongo.StringField(required = True)
-    password = mongo.StringField(required = True)
+    password_hash = mongo.StringField(required = True)
     meta = {
         'collection':'user'
     }
-    
-    def __init__(self, username):
-        self.username = username
-        
+    @property
+    def password(self):
+        raise AttributeError('NO ACCESS!')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+            
     def __repr__(self):
         return '<User {}>'.format(self.username)
     
-    def set_password(self, password):
-        self.password = bcrypt.generate_password_hash(password)
+    
         
     def check_password(self , password):
-        return bcrypt.check_password_hash(self.password, password)
+        return check_password_hash(self.password, password)
     
     
 

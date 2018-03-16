@@ -1,3 +1,3 @@
-from flask_bcrypt import Bcrypt
+from flask_bootstrap import Bootstrap
 
-bcrypt = Bcrypt()
+bootstrap = Bootstrap()

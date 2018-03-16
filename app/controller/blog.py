@@ -6,10 +6,7 @@ from app.form import login_form, reg_form
 blog_blueprint = Blueprint('blog', __name__)
 
 
-@blog_blueprint.route('/', methods=['GET'])
-def index():
-    diaries = Blog.objects.all().order_by('pub_date')
-    return render_template('index.html', diaries=diaries)
+
 
 
 @blog_blueprint.route('/login', methods = ['GET','POST'])
@@ -23,7 +20,8 @@ def login():
                 user.save()
                 login_user(user) # remember=True
                 flash('Thanks for logging in, {}'.format(current_user.username))
-                return redirect(url_for('blog.index'))
+                print(current_user.username)
+                return redirect(url_for('main.index'))
             flash('Invalid username or password.')
     return render_template('login.html', form=form)
 
@@ -38,7 +36,7 @@ def register():
             new_user.password = form.password.data
             print(new_user.password_hash)
             new_user.save()
-            return redirect(url_for("blog.index"))
+            return redirect(url_for("main.index"))
     
     return render_template('register.html', form = form)
         

@@ -4,16 +4,17 @@ from mongoengine import *
 from flask_mongoengine import MongoEngine
 from datetime import datetime
 
-
 mongo = MongoEngine()
 
 
 class User(mongo.Document, UserMixin):
-    username = mongo.StringField(required = True)
-    password_hash = mongo.StringField(required = True)
+    username = mongo.StringField(required=True)
+    password_hash = mongo.StringField(required=True)
+    authenticated = BooleanField(default=False)
     meta = {
-        'collection':'user'
+        'collection': 'user'
     }
+
     @property
     def password(self):
         raise AttributeError('NO ACCESS!')
@@ -39,22 +40,18 @@ class User(mongo.Document, UserMixin):
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
-    
-    
-        
-    def check_password(self , password):
+
+    def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
-    
+
 
 class Blog(mongo.Document):
     meta = {
-        'collection':'post'
+        'collection': 'post'
     }
-    blog_id = mongo.StringField(max_length=250, required=True) # use uuid4
+    #blog_id = mongo.StringField(max_length=250, required=True)  # use uuid4
     content = mongo.StringField(required=True)
-    author = mongo.ReferenceField(User,reverse_delete_rule=CASCADE)
-    tags = mongo.ListField(StringField(max_length=32))
+    author = mongo.ReferenceField(User, reverse_delete_rule=CASCADE)
     create_time = mongo.DateTimeField(default=datetime.now)
 
     def __repr__(self):

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextField, PasswordField, BooleanField
+from wtforms import StringField, SubmitField, TextField, PasswordField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, EqualTo, URL
 from wtforms import ValidationError
 from app.models import User
@@ -13,14 +13,15 @@ class login_form(FlaskForm):
     
 
 class reg_form(FlaskForm):
-    username = StringField('username', [DataRequired(), Length(max = 32)])
-    password = PasswordField('password', [DataRequired(),Length(min = 6)])
-    password_rp = PasswordField('password_rp', [DataRequired(), EqualTo('password')])
+    username = StringField('用户名', [DataRequired(), Length(max = 32)])
+    password = PasswordField('请输入密码', [DataRequired(),Length(min = 6)])
+    password_rp = PasswordField('再次输入密码', [DataRequired(), EqualTo('password')])
     submit = SubmitField('submit')
     def validate_username(self,field):
         if User.objects(username=field.data).first():
             raise ValidationError('Username already in use.')
         
-    
-    
-    
+
+class post_form(FlaskForm):
+    content = TextAreaField('Blog Content', [DataRequired()])
+    submit = SubmitField('Create')

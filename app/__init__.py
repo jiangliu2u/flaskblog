@@ -1,6 +1,6 @@
 from .config import config, Config
 from flask_login import LoginManager
-from .controller import blog
+from .controller import blog, main
 from app.models import mongo
 from app.extensions import bootstrap
 
@@ -19,6 +19,7 @@ def create_app(config_name):
     mongo.init_app(app)
     bootstrap.init_app(app)
     app.register_blueprint(blog.blog_blueprint)
+    app.register_blueprint(main.main_blueprint)
     return app
 
 @login_manager.user_loader

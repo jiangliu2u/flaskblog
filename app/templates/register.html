@@ -1,15 +1,17 @@
 {% extends "layout.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
-{% block body %}
-  <h2>Register</h2>
-  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-      
-  <form action="{{ url_for('blog.register') }}" method='POST'>
-      {{ form.hidden_tag() }}
-     {{ wtf.form_errors(form, hiddens="only") }}
-          {{ wtf.form_field(form.username) }}
-          {{ wtf.form_field(form.password) }}
-          {{ wtf.form_field(form.password_rp) }}
-          {{ wtf.form_field(form.submit) }}
-  </form>
+{% block content %}
+    <div class="container">
+        <div class="col-md-4">
+            {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+            <form action="{{ url_for('blog.register') }}" method='POST'>
+                {{ form.hidden_tag() }}
+                {{ wtf.form_errors(form, hiddens="only") }}
+                {{ wtf.form_field(form.username) }}
+                {{ wtf.form_field(form.password) }}
+                {{ wtf.form_field(form.password_rp) }}
+                {{ wtf.form_field(form.submit) }}
+            </form>
+        </div>
+    </div>
 {% endblock %}

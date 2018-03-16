@@ -5,6 +5,7 @@ from app.models import mongo
 from app.extensions import bootstrap
 
 login_manager = LoginManager()
+login_manager.login_view = 'blog.login'
 login_manager.login_message = 'Unauthorized User'
 login_manager.login_message_category = "info"
 login_manager.session_protection = 'strong'
@@ -19,3 +20,8 @@ def create_app(config_name):
     bootstrap.init_app(app)
     app.register_blueprint(blog.blog_blueprint)
     return app
+
+@login_manager.user_loader
+def load_user(username):
+    from app.models import User
+    return User.objects(username=str(username)).first()

@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from app.models import Blog, User
+from flask_login import login_user, current_user, fresh_login_required
 from app.form import login_form, reg_form
 
 blog_blueprint = Blueprint('blog', __name__)
@@ -13,11 +14,20 @@ def index():
 
 @blog_blueprint.route('/login', methods = ['GET','POST'])
 def login():
-    form = login_form()
-    if form.validate():
-        flash('You have been logged in.')
-        return redirect(url_for('blog.index'))
-    return render_template('login.html',form=form)
+    form = login_form(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            user = User.objects(username=str(form.username.data)).first()
+            if user is not None and user.check_password(form.password.data):
+                user.authenticated = True
+                user.save()
+                login_user(user) # remember=True
+                flash('Thanks for logging in, {}'.format(current_user.username))
+                return redirect(url_for('blog.index'))
+            flash('Invalid username or password.')
+    return render_template('login.html', form=form)
+
+
 
 @blog_blueprint.route('/reg', methods = ['GET', 'POST'])
 def register():

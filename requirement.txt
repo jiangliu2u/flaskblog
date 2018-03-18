@@ -1,0 +1,8 @@
+flask
+wtforms
+flask_wtf
+werkzeug
+flask_login
+mongoengine
+flask_mongoengine
+flask_bootstrap

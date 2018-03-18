@@ -5,7 +5,7 @@ from app.models import mongo
 from app.extensions import bootstrap
 
 login_manager = LoginManager()
-login_manager.login_view = 'blog.login'
+#login_manager.login_view = 'blog.login'
 login_manager.login_message = 'Unauthorized User'
 login_manager.login_message_category = "info"
 login_manager.session_protection = 'strong'

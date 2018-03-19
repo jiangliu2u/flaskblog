@@ -4,16 +4,16 @@ from flask_login import login_user, current_user, fresh_login_required
 from app.form import post_form
 from datetime import datetime
 
-main_blueprint = Blueprint('main', __name__)
+main = Blueprint('main', __name__)
 
 
-@main_blueprint.route('/')
+@main.route('/')
 def index():
     diaries = Blog.objects.all().order_by('-create_time')
     return render_template('index.html', diaries=diaries)
 
 
-@main_blueprint.route('/new_post', methods=['GET', 'POST'])
+@main.route('/new_post', methods=['GET', 'POST'])
 def new_post():
     form = post_form(request.form)
     if request.method == "POST":

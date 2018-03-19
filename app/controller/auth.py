@@ -3,10 +3,10 @@ from app.models import Blog, User
 from flask_login import login_user, current_user, fresh_login_required, logout_user
 from app.form import login_form, reg_form
 
-blog_blueprint = Blueprint('blog', __name__)
+auth = Blueprint('auth', __name__)
 
 
-@blog_blueprint.route('/login', methods=['GET', 'POST'])
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = login_form(request.form)
     if request.method == 'POST':
@@ -23,7 +23,7 @@ def login():
     return render_template('login.html', form=form)
 
 
-@blog_blueprint.route('/reg', methods=['GET', 'POST'])
+@auth.route('/reg', methods=['GET', 'POST'])
 def register():
     form = reg_form(request.form)
     if request.method == 'POST':
@@ -37,7 +37,7 @@ def register():
     return render_template('register.html', form=form)
 
 
-@blog_blueprint.route('/logout')
+@auth.route('/logout')
 def logout():
     user = current_user
     if current_user.is_authenticated:

@@ -1,10 +1,10 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from mongoengine import *
-from flask_mongoengine import MongoEngine
+from .extensions import mongo
 from datetime import datetime
 
-mongo = MongoEngine()
+
 
 
 class User(mongo.Document, UserMixin):
@@ -52,7 +52,7 @@ class Blog(mongo.Document):
     # blog_id = mongo.StringField(max_length=250, required=True)  # use uuid4
     content = mongo.StringField(required=True)
     author = mongo.ReferenceField(User, reverse_delete_rule=CASCADE)
-    create_time = mongo.DateTimeField(default=datetime.now)
+    create_time = mongo.DateTimeField(default=datetime.utcnow())
 
     def __repr__(self):
         return '<Post %r>' % (self.title)

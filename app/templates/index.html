@@ -1,26 +1,24 @@
-{% extends "layout.html" %}
-{% block title %}
-    首页
-{% endblock %}
-{% block content %}
-    {{ super() }}
-    <div>
-        <div></div>
-        <div>
-            {% if diaries %}
+{% extends "layout.html" %} {% block title %} 首页 {% endblock %} {% block content %} {{ super() }}
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                {% if diaries %}
                 <ul>
                     {% for diary in diaries %}
-                        <div id=blog>
-                            <h4 id="title">{{ diary.author.username }}</h4>
-                            <small id=diary-time>{{ diary.create_time }}</small>
-                            <p id=diary-content>{{ diary.content }}</p>
-                        </div>
-                        <hr>
-                    {% endfor %}
+                    <div id=blog>
+                        <h4 id="title">{{ diary.author.username }}说: </h4>
+                        <p id=diary-content>{{ diary.content }}</p>
+                        <p id=diary-time style="padding-top:10px; font-size:5px;color:gray">{{ moment(diary.create_time).format('LLL') }}</p>
+                    </div>
+                    <hr>
+                     {% endfor %}
                 </ul>
-            {% else %}
-                <p>No diaries are available.</p>
-            {% endif %}
+                {% else %}
+                <p>No post are available.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
+</div>
 {% endblock %}

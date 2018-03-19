@@ -16,7 +16,7 @@
     <div class="container">
         <div class="col-md-4">
             {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-            <form action="{{ url_for('blog.register') }}" method='POST'>
+            <form action="{{ url_for('auth.register') }}" method='POST'>
                 {{ form.hidden_tag() }}
                 {{ wtf.form_errors(form, hiddens="only") }}
                 {{ wtf.form_field(form.username) }}

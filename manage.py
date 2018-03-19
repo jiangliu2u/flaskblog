@@ -7,4 +7,4 @@ flaskapp = create_app('default')
 
 
 if __name__ == '__main__':
-    flaskapp.run(host='0.0.0.0', port=9999)
+    flaskapp.run()

@@ -11,6 +11,7 @@ class User(mongo.Document, UserMixin):
     username = mongo.StringField(required=True)
     password_hash = mongo.StringField(required=True)
     authenticated = BooleanField(default=False)
+    isAdmin = BooleanField(default=False)
     meta = {
         'collection': 'user'
     }
@@ -28,8 +29,8 @@ class User(mongo.Document, UserMixin):
         return self.authenticated
 
     @property
-    def is_active(self):
-        return True
+    def is_admin(self):
+        return self.isAdmin
 
     @property
     def is_anonymous(self):

@@ -1,6 +1,8 @@
 flask
 wtforms
 flask_wtf
+flask_moment
+flask_admin
 werkzeug
 flask_login
 mongoengine

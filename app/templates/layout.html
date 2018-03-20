@@ -14,9 +14,6 @@
                         </li>
                         {% if  not current_user.is_authenticated %}
                             <li>
-                                <a href="{{ url_for('auth.register') }}">注册</a>
-                            </li>
-                            <li>
                                 <a href="{{ url_for('auth.login') }}">登录</a>
                             </li>
                         {% else %}

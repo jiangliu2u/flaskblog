@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from app.models import Blog, User
 from flask_login import login_user, current_user, fresh_login_required, logout_user
-from app.form import login_form, reg_form
+from app.form import login_form
 
 auth = Blueprint('auth', __name__)
 
@@ -23,18 +23,18 @@ def login():
     return render_template('login.html', form=form)
 
 
-@auth.route('/reg', methods=['GET', 'POST'])
-def register():
-    form = reg_form(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            new_user = User(username=form.username.data)
-            new_user.password = form.password.data
-            print(new_user.password_hash)
-            new_user.save()
-            return redirect(url_for("main.index"))
-
-    return render_template('register.html', form=form)
+# @auth.route('/reg', methods=['GET', 'POST'])
+# def register():
+#     form = reg_form(request.form)
+#     if request.method == 'POST':
+#         if form.validate_on_submit():
+#             new_user = User(username=form.username.data)
+#             new_user.password = form.password.data
+#             print(new_user.password_hash)
+#             new_user.save()
+#             return redirect(url_for("main.index"))
+#
+#     return render_template('register.html', form=form)
 
 
 @auth.route('/logout')

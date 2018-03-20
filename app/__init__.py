@@ -1,6 +1,7 @@
 from .config import config, Config
 from flask_login import LoginManager
 from .controller import auth, main
+from .controller import create_admin
 from app.models import mongo
 from app.extensions import bootstrap, moment
 
@@ -21,6 +22,7 @@ def create_app(config_name):
     mongo.init_app(app)
     bootstrap.init_app(app)
     moment.init_app(app)
+    create_admin(app)
     app.register_blueprint(auth.auth)
     app.register_blueprint(main.main)
     return app

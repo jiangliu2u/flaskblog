@@ -10,7 +10,8 @@ from datetime import datetime
 class User(mongo.Document, UserMixin):
     username = mongo.StringField(required=True)
     password_hash = mongo.StringField(required=True)
-    authenticated = BooleanField(default=False)
+    authenticated = mongo.BooleanField(default=False)
+    isAdmin = mongo.BooleanField(default=False)
     meta = {
         'collection': 'user'
     }
@@ -18,6 +19,9 @@ class User(mongo.Document, UserMixin):
     @property
     def password(self):
         raise AttributeError('NO ACCESS!')
+    @property
+    def is_admin(self):
+        return self.isAdmin
 
     @password.setter
     def password(self, password):

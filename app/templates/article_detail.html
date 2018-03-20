@@ -5,7 +5,7 @@
     {{super()}}
     <h2>{{ article.title }}</h2>
     <p>author: {{ article.author.username }}</p>
-    <p>body: {{ article.content }}</p>
+    <p>body: {{ article.content|safe }}</p>
 {% endblock %}
 
 {% block scripts %}

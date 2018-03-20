@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block title %}{{ article.title }}{% endblock %}
+{% block content %}
+
+    {{super()}}
+    <h2>{{ article.title }}</h2>
+    <p>author: {{ article.author.username }}</p>
+    <p>body: {{ article.content }}</p>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+{% endblock %}

@@ -9,7 +9,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Email, Length, Regexp, EqualTo
 from wtforms import ValidationError
-from app.models import User
+from app.models import User, Blog
 
 class CreateUserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(1, 64), Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0, 'Usernames must have only letters, numbers, dots or underscores')])
@@ -58,7 +58,7 @@ class MyHomeView(AdminIndexView):
 # custom model view when displaying
 class UserView(ModelView):
     column_filters = ['username']
-    column_exclude_list = ['password_hash']
+    column_exclude_list = ['password_hash']#不显示的字段
 
     can_delete = True
     can_view_details = True
@@ -80,13 +80,20 @@ class UserView(ModelView):
 class PostView(ModelView):
     can_delete = True
     can_view_details = True
-    can_create = True
-    can_edit = True
+    can_create = False
+    can_edit = False
+    column_exclude_list = ['author']#不显示的字段
+    list_template = 'admin/blog_list.html'
 
-    column_exclude_list = ['content']
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.is_admin
 
-    edit_template = 'admin/blog_edit.html'
-    create_template = 'admin/blog_create.html'
+class ArticleView(ModelView):
+    can_delete = True
+    can_view_details = True
+    can_create = False
+    can_edit = False
+    column_exclude_list = ['author','article_id']#不显示的字段
     list_template = 'admin/blog_list.html'
 
     def is_accessible(self):

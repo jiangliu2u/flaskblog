@@ -4,8 +4,8 @@
     {{ super() }}
     <div class="row-fluid">
         <div>
-            {% if current_user.is_authenticated and (current_user.is_admin or current_user.is_super_admin) %}
-            <h1>MONGOBLOG ADMIN</h1>
+            {% if current_user.is_authenticated and current_user.is_admin %}
+            <h1>欢迎进入后台管理系统</h1>
             {% else %}
             <form method="POST" action="">
                 {{ form.hidden_tag() if form.hidden_tag }}
@@ -22,7 +22,7 @@
                         {% endif %}
                     </div>
                 {% endfor %}
-                <button class="btn" type="submit">Submit</button>
+                <button class="btn" type="submit">登录</button>
             </form>
             {% endif %}
         </div>

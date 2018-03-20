@@ -27,6 +27,11 @@ class post_form(FlaskForm):
     content = TextAreaField('微博内容', [DataRequired()])
     submit = SubmitField('发布')
 
+class article_form(FlaskForm):
+    title = StringField('标题', [DataRequired()])
+    content = TextAreaField('文章内容', [DataRequired()])
+    submit = SubmitField('发布')
+
 class admin_login_form(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])

@@ -12,6 +12,9 @@ class User(mongo.Document, UserMixin):
     password_hash = mongo.StringField(required=True)
     authenticated = BooleanField(default=False)
     isAdmin = BooleanField(default=False)
+
+    authenticated = mongo.BooleanField(default=False)
+    isAdmin = mongo.BooleanField(default=False)
     meta = {
         'collection': 'user'
     }
@@ -19,6 +22,9 @@ class User(mongo.Document, UserMixin):
     @property
     def password(self):
         raise AttributeError('NO ACCESS!')
+    @property
+    def is_admin(self):
+        return self.isAdmin
 
     @password.setter
     def password(self, password):
@@ -53,7 +59,22 @@ class Blog(mongo.Document):
     # blog_id = mongo.StringField(max_length=250, required=True)  # use uuid4
     content = mongo.StringField(required=True)
     author = mongo.ReferenceField(User, reverse_delete_rule=CASCADE)
-    create_time = mongo.DateTimeField(default=datetime.utcnow())
+    author_name = mongo.StringField(required=True)
+    create_time = mongo.DateTimeField()
 
     def __repr__(self):
         return '<Post %r>' % (self.title)
+
+class Article(mongo.Document):
+    meta = {
+        'collection': 'article'
+    }
+    article_id = mongo.StringField(max_length=250, required=True)  # use uuid4
+    title = mongo.StringField(required=True)
+    content = mongo.StringField(required=True)
+    author = mongo.ReferenceField(User, reverse_delete_rule=CASCADE)
+    author_name = mongo.StringField(required=True)
+    create_time = mongo.DateTimeField()
+
+    def __repr__(self):
+        return '<Article %r>' % (self.title)

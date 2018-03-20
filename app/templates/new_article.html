@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}
+    写文章
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+    {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+    <div class="col-md-4">
+        <form class="form form-horizontal" action='{{ url_for('main.new_article') }}' method='POST'>
+            {{ form.hidden_tag() }}
+            {{ wtf.form_errors(form, hiddens="only") }}
+            {{ wtf.form_field(form.title) }}
+            {{ wtf.form_field(form.content, id="editor1") | safe }}
+            {{ wtf.form_field(form.submit)}}
+        </form>
+    </div>
+    <div>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script src="//cdn.ckeditor.com/4.9.0/full/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('editor1');
+        CKEDITOR.config.width="1080px";
+        CKEDITOR.config.height="700px";
+        CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+        CKEDITOR.config.shiftEnterMode = CKEDITOR.ENTER_BR;
+        CKEDITOR.config.basicEntities = false;
+        CKEDITOR.config.entities_greek = false;
+        CKEDITOR.config.entities_latin = false;
+        CKEDITOR.config.entities_additional = '';
+    </script>
+{% endblock %}

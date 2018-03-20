@@ -1,6 +1,5 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}Base{% endblock %}
-
 {% block navbar %}
     <nav class="navbar navbar-static-top navbar-inverse">
         <div class="container">
@@ -22,7 +21,13 @@
                             </li>
                         {% else %}
                             <li>
+                                <a href="{{ url_for('main.article_view') }}">文章列表</a>
+                            </li>
+                            <li>
                                 <a href="{{ url_for('main.new_post') }}">发微博</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('main.new_article') }}">写文章</a>
                             </li>
                             <li>
                                 <a href="{{ url_for('auth.logout') }}">退出</a>

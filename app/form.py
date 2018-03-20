@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms import StringField, SubmitField, TextField, PasswordField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, EqualTo, URL
 from wtforms import ValidationError
@@ -25,3 +26,23 @@ class reg_form(FlaskForm):
 class post_form(FlaskForm):
     content = TextAreaField('微博内容', [DataRequired()])
     submit = SubmitField('发布')
+
+class article_form(FlaskForm):
+    title = StringField('标题', [DataRequired()])
+    content = TextAreaField('文章内容', [DataRequired()])
+    submit = SubmitField('发布')
+
+class admin_login_form(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+
+    def get_user(self):
+        user = User.objects(username=self.username.data).first()
+        if user is not None:
+            if not check_password_hash(user.password_hash, self.password.data):
+                return None
+            if not user.is_admin:
+                return None
+            return user
+        else:
+            return None

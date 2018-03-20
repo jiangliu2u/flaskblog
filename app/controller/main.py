@@ -28,7 +28,7 @@ def new_post():
             post.save()
             flash('Created successfully.')
             return redirect(url_for('main.index'))
-    return render_template("new_post.html", form=form, current_time=datetime.utcnow())
+    return render_template("new_post.html", form=form)
 
 
 @main.route('/new_article', methods=['GET', 'POST'])
@@ -42,7 +42,7 @@ def new_article():
             article.save()
             flash('Created successfully.')
             return redirect(url_for('main.index'))
-    return render_template("new_article.html", form=form, current_time=datetime.utcnow())
+    return render_template("new_article.html", form=form)
 
 @main.route('/article/<string:article_id>', methods=['GET'])
 def article_detail(article_id=''):

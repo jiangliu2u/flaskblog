@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from app.models import Blog, User, Article
-from flask_login import login_user, current_user, fresh_login_required
+from flask_login import login_user, current_user, fresh_login_required, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.form import post_form, article_form
 from datetime import datetime
@@ -10,15 +10,18 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    posts = Blog.objects.all().order_by('-create_time')
-    return render_template('index.html', diaries=posts)
-
-@main.route('/article_view')
-def article_view():
     articles = Article.objects.all().order_by('-create_time')
     return render_template('article_view.html', articles=articles)
 
+@main.route('/post_view')
+@login_required
+def post_view():
+    posts = Blog.objects.all().order_by('-create_time')
+    return render_template('index.html', diaries=posts)
+    
+
 @main.route('/new_post', methods=['GET', 'POST'])
+@login_required
 def new_post():
     form = post_form(request.form)
     if request.method == "POST":
@@ -32,6 +35,7 @@ def new_post():
 
 
 @main.route('/new_article', methods=['GET', 'POST'])
+@login_required
 def new_article():
     form = article_form(request.form)
     if request.method == "POST":
@@ -48,6 +52,3 @@ def new_article():
 def article_detail(article_id=''):
     article = Article.objects(article_id=article_id).first()
     return render_template('article_detail.html',article=article)
-
-## TODO：1文章预览页面
-## 

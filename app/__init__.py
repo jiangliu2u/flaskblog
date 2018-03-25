@@ -1,13 +1,12 @@
 from .config import config, Config
 from flask_login import LoginManager
-from .controller import auth, main
+from .controller import auth, main, post, article
 from .controller import create_admin
 from app.models import mongo
 from app.extensions import bootstrap, moment
 
-
 login_manager = LoginManager()
-#login_manager.login_view = 'auth.login'
+# login_manager.login_view = 'auth.login'
 login_manager.login_message = 'Unauthorized User'
 login_manager.login_message_category = "info"
 login_manager.session_protection = 'strong'
@@ -25,6 +24,8 @@ def create_app(config_name):
     create_admin(app)
     app.register_blueprint(auth.auth)
     app.register_blueprint(main.main)
+    app.register_blueprint(post.post_main)
+    app.register_blueprint(article.article_main)
     return app
 
 

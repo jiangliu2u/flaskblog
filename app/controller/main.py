@@ -1,9 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
-from app.models import Blog, User, Article
-from flask_login import login_user, current_user, fresh_login_required, login_required
-from werkzeug.security import generate_password_hash, check_password_hash
-from app.form import post_form, article_form
-from datetime import datetime
+from flask import Blueprint, render_template
+from app.models import Article
 
 main = Blueprint('main', __name__)
 
@@ -11,44 +7,4 @@ main = Blueprint('main', __name__)
 @main.route('/')
 def index():
     articles = Article.objects.all().order_by('-create_time')
-    return render_template('article_view.html', articles=articles)
-
-@main.route('/post_view')
-@login_required
-def post_view():
-    posts = Blog.objects.all().order_by('-create_time')
-    return render_template('index.html', diaries=posts)
-    
-
-@main.route('/new_post', methods=['GET', 'POST'])
-@login_required
-def new_post():
-    form = post_form(request.form)
-    if request.method == "POST":
-        if form.validate_on_submit() and current_user.is_authenticated:
-            post = Blog(content=form.content.data,
-                        author=User.objects(username=current_user.username).first(), author_name=current_user.username,create_time=datetime.utcnow())
-            post.save()
-            flash('Created successfully.')
-            return redirect(url_for('main.index'))
-    return render_template("new_post.html", form=form)
-
-
-@main.route('/new_article', methods=['GET', 'POST'])
-@login_required
-def new_article():
-    form = article_form(request.form)
-    if request.method == "POST":
-        if form.validate_on_submit() and current_user.is_authenticated:
-            article = Article(content=form.content.data,
-                              author=User.objects(username=current_user.username).first(), author_name=current_user.username, title=form.title.data,create_time=datetime.utcnow())
-            article.article_id = generate_password_hash(article.title)
-            article.save()
-            flash('Created successfully.')
-            return redirect(url_for('main.index'))
-    return render_template("new_article.html", form=form)
-
-@main.route('/article/<string:article_id>', methods=['GET'])
-def article_detail(article_id=''):
-    article = Article.objects(article_id=article_id).first()
-    return render_template('article_detail.html',article=article)
+    return render_template('article/article_view.html', articles=articles)

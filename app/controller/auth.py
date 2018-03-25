@@ -20,7 +20,7 @@ def login():
                 print(current_user.username)
                 return redirect(url_for('main.index'))
             flash('Invalid username or password.')
-    return render_template('login.html', form=form)
+    return render_template('auth/login.html', form=form)
 
 
 # @auth.route('/reg', methods=['GET', 'POST'])

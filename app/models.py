@@ -5,8 +5,6 @@ from .extensions import mongo
 from datetime import datetime
 
 
-
-
 class User(mongo.Document, UserMixin):
     username = mongo.StringField(required=True)
     password_hash = mongo.StringField(required=True)
@@ -22,6 +20,7 @@ class User(mongo.Document, UserMixin):
     @property
     def password(self):
         raise AttributeError('NO ACCESS!')
+
     @property
     def is_admin(self):
         return self.isAdmin
@@ -56,7 +55,7 @@ class Blog(mongo.Document):
     meta = {
         'collection': 'post'
     }
-    # blog_id = mongo.StringField(max_length=250, required=True)  # use uuid4
+    post_id = mongo.StringField(max_length=250,required=True)  # use uuid4
     content = mongo.StringField(required=True)
     author = mongo.ReferenceField(User, reverse_delete_rule=CASCADE)
     author_name = mongo.StringField(required=True)
@@ -64,6 +63,7 @@ class Blog(mongo.Document):
 
     def __repr__(self):
         return '<Post %r>' % (self.title)
+
 
 class Article(mongo.Document):
     meta = {
@@ -76,5 +76,11 @@ class Article(mongo.Document):
     author_name = mongo.StringField(required=True)
     create_time = mongo.DateTimeField()
 
+
     def __repr__(self):
         return '<Article %r>' % (self.title)
+
+
+class Comment(mongo.Document):
+    content = mongo.StringField(required=True)
+    create_time = mongo.DateTimeField()

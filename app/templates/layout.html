@@ -5,7 +5,8 @@
         <div class="container">
             <div class="row">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nv" aria-expanded="false">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nv"
+                            aria-expanded="false">
                         <small style="color:white">菜单</small>
                     </button>
                 </div>
@@ -20,13 +21,13 @@
                             </li>
                         {% else %}
                             <li>
-                                <a href="{{ url_for('main.post_view') }}">微博列表</a>
+                                <a href="{{ url_for('post_main.post_view') }}">微博列表</a>
                             </li>
                             <li>
-                                <a href="{{ url_for('main.new_post') }}">发微博</a>
+                                <a href="{{ url_for('post_main.new_post') }}">发微博</a>
                             </li>
                             <li>
-                                <a href="{{ url_for('main.new_article') }}">写文章</a>
+                                <a href="{{ url_for('article_main.new_article') }}">写文章</a>
                             </li>
                             <li>
                                 <a href="{{ url_for('auth.logout') }}">退出</a>

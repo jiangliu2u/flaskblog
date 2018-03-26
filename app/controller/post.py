@@ -34,3 +34,9 @@ def new_post():
             flash('Created successfully.')
             return redirect(url_for('main.index'))
     return render_template("post/new_post.html", form=form)
+
+
+@post_main.route('/post/<string:post_id>', methods=['GET'])
+def post_detail(post_id=''):
+    post = Blog.objects(post_id=post_id).first()
+    return render_template('post/post_detail.html', post=post)

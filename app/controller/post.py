@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from app.models import Blog, User
+from app.models import Blog, User, Comment
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
-from app.form import post_form
+from app.form import post_form, comment_form
 from datetime import datetime
 
 post_main = Blueprint('post_main', __name__)
@@ -36,7 +36,32 @@ def new_post():
     return render_template("post/new_post.html", form=form)
 
 
-@post_main.route('/post/<string:post_id>', methods=['GET'])
+@post_main.route('/post/<string:post_id>', methods=['GET','POST'])
 def post_detail(post_id=''):
     post = Blog.objects(post_id=post_id).first()
-    return render_template('post/post_detail.html', post=post)
+    print(post, 'aaaaaaaaaaaaaaaaa')
+    form = comment_form(request.form)
+    if request.method == 'POST':
+        comment = Comment()
+            comment.content=form.content.data
+            comment.comment_id=generate_password_hash(form.content.data)
+            comment.author=User.objects(username=current_user.username).first()
+            comment.author_name=current_user.username
+            comment.create_time=datetime.utcnow()
+            post1 = Blog.objects(post_id=post_id).first()
+            print(post1,'嘎嘎嘎嘎')
+            post1.comments=[comment]
+            print(comment)
+            post1.save()
+            flash('Created successfully.')
+            return redirect(url_for('post_main.post_view'))
+    return render_template('post/post_detail.html', post=post, form=form)
+
+
+@post_main.route('/new_comment', methods=['POST'])
+def new_comment():
+    form = comment_form(request.form)
+    if request.method == "POST":
+        if form.validate_on_submit() and current_user.is_authenticated:
+            
+            

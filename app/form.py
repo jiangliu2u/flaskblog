@@ -27,6 +27,11 @@ class post_form(FlaskForm):
     content = TextAreaField('微博内容', [DataRequired()])
     submit = SubmitField('发布')
 
+
+class comment_form(FlaskForm):
+    content = TextAreaField('评论内容', [DataRequired()])
+    submit = SubmitField('发布')
+
 class article_form(FlaskForm):
     title = StringField('标题', [DataRequired()])
     content = TextAreaField('文章内容', [DataRequired()])

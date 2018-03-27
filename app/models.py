@@ -51,12 +51,14 @@ class User(mongo.Document, UserMixin):
         return check_password_hash(self.password_hash, password)
 
 
-class Comment(mongo.EmbeddedDocument):
-    meta = {'collection': 'comment'}
+class Comment(EmbeddedDocument):
     comment_id = mongo.StringField(max_length=250, required=True)
     content = mongo.StringField(required=True)
+    author = mongo.ReferenceField(User)
+    author_name = mongo.StringField(required=True)
     create_time = mongo.DateTimeField()
-
+    def __repr__(self):
+        return '<Comment %r>' % (self.content)
 
 class Blog(mongo.Document):
     meta = {
@@ -67,7 +69,7 @@ class Blog(mongo.Document):
     author = mongo.ReferenceField(User, reverse_delete_rule=CASCADE)
     author_name = mongo.StringField(required=True)
     create_time = mongo.DateTimeField()
-    comments = mongo.EmbeddedDocumentListField(Comment)
+    comments = mongo.EmbeddedDocumentListField('Comment')
 
     def __repr__(self):
         return '<Post %r>' % (self.title)

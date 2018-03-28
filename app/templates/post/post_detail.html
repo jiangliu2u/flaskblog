@@ -10,13 +10,12 @@
             <div class="col-lg-8 list-group-item">
                 <p>{{ post.author.username }}说:</p>
                 <small>{{ moment(post.create_time).format('LLL') }}</small>
-                <p>{{ post.content }}</p>
-                <h3>评论</h3>
+                <h3>{{ post.content }}</h3>
                 {% for comment in post.comments %}
                     <div class="list-group-item">
-                        <p>{{ comment.author_name }}评论:</p>
-                        <small>{{ moment(comment.create_time).format('LLL') }}</small>
-                        <p>{{ comment.content }}</p>
+                        <p style="margin: 0 0 0 0">{{ comment.author_name }}评论:</p>
+                        <small style="margin-top:2px; font-size:5px;color:gray">{{ moment(comment.create_time).format('LLL') }}</small>
+                        <p style="margin-bottom:2px ">{{ comment.content }}</p>
                     </div>
                 {% endfor %}
                 <br>

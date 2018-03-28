@@ -8,15 +8,28 @@
         <div class="row">
             <div class="col-lg-2"></div>
             <div class="col-lg-8 list-group-item">
-                <p>{{ post.author.username }}说</p>
+                <p>{{ post.author.username }}说:</p>
+                <small>{{ moment(post.create_time).format('LLL') }}</small>
                 <p>{{ post.content }}</p>
-                <form class="form form-horizontal" action='{{ url_for('post_main.new_comment')}}' method='POST'>
+                <h3>评论</h3>
+                {% for comment in post.comments %}
+                    <div class="list-group-item">
+                        <p>{{ comment.author_name }}评论:</p>
+                        <small>{{ moment(comment.create_time).format('LLL') }}</small>
+                        <p>{{ comment.content }}</p>
+                    </div>
+                {% endfor %}
+                <br>
+                <br>
+                <form class="form form-horizontal" action='{{ url_for('post_main.post_detail',post_id=post.post_id) }}'
+                      method='POST'>
                     {{ form.hidden_tag() }}
                     {{ wtf.form_errors(form, hiddens="only") }}
                     {{ wtf.form_field(form.content) }}
                     {{ wtf.form_field(form.submit) }}
                 </form>
             </div>
+
             <div class="col-lg-2"></div>
         </div>
     </div>

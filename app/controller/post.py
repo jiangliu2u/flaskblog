@@ -32,7 +32,7 @@ def new_post():
                         create_time=datetime.utcnow())
             post.save()
             flash('Created successfully.')
-            return redirect(url_for('main.index'))
+            return redirect(url_for('post_main.post_view'))
     return render_template("post/new_post.html", form=form)
 
 

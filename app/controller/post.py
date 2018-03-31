@@ -27,7 +27,7 @@ def new_post():
     form = post_form(request.form)
     if request.method == "POST":
         if form.validate_on_submit() and current_user.is_authenticated:
-            post = Blog(content=form.content.data,
+            post = Blog(content=form.content.data,post_id=generate_password_hash(form.content.data),
                         author=User.objects(username=current_user.username).first(), author_name=current_user.username,
                         create_time=datetime.utcnow())
             post.save()

@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from app.models import Blog, User
 from flask_login import login_user, current_user, fresh_login_required, logout_user
 from app.form import login_form
+from datetime import datetime
 
 auth = Blueprint('auth', __name__)
 
@@ -14,6 +15,7 @@ def login():
             user = User.objects(username=str(form.username.data)).first()
             if user is not None and user.check_password(form.password.data):
                 user.authenticated = True
+                user.last_login_at = datetime.utcnow()
                 user.save()
                 login_user(user)  # remember=True
                 flash('Thanks for logging in, {}'.format(current_user.username))

@@ -10,7 +10,7 @@ class User(mongo.Document, UserMixin):
     password_hash = mongo.StringField(required=True)
     authenticated = BooleanField(default=False)
     isAdmin = BooleanField(default=False)
-
+    last_login_at = mongo.DateTimeField()
     authenticated = mongo.BooleanField(default=False)
     isAdmin = mongo.BooleanField(default=False)
     meta = {

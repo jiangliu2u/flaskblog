@@ -7,7 +7,7 @@
 {% block content %}
     <div class="container">
     {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form class="form form-horizontal" action='{{ url_for('article_main.new_article') }}' method='POST'>
             {{ form.hidden_tag() }}
             {{ wtf.form_errors(form, hiddens="only") }}
@@ -23,8 +23,8 @@
     <script src="//cdn.ckeditor.com/4.9.0/full/ckeditor.js"></script>
     <script>
         CKEDITOR.replace('editor1');
-        CKEDITOR.config.width = "1080px";
-        CKEDITOR.config.height = "700px";
+        CKEDITOR.config.width = '100%';
+        CKEDITOR.config.height = '350px';
         CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
         CKEDITOR.config.shiftEnterMode = CKEDITOR.ENTER_BR;
         CKEDITOR.config.basicEntities = false;

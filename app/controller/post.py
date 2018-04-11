@@ -11,6 +11,7 @@ post_main = Blueprint('post_main', __name__)
 @post_main.route('/post_view')
 @login_required
 def post_view():
+    User.objects(username = current_user.username).first().update(last_login_at = datetime.utcnow())
     posts = Blog.objects.all().order_by('-create_time')
     for i in posts:
         if i.post_id == '':

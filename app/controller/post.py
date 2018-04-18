@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
 from app.form import post_form, comment_form,pic_post_form
 from datetime import datetime
-from ..extensions import uploaded_photos as ff
+import os
 
 post_main = Blueprint('post_main', __name__)
 
@@ -21,22 +21,6 @@ def post_view():
         if i.author_name == '':
             i.update(author_name=i.author.username)
     return render_template('post/index.html', diaries=posts)
-
-
-@post_main.route('/new_post', methods=['GET', 'POST'])
-@login_required
-def new_post():
-    form = post_form(request.form)
-    if request.method == "POST":
-        if form.validate_on_submit() and current_user.is_authenticated:
-            post = Blog(content=form.content.data,post_id=generate_password_hash(form.content.data),
-                        author=User.objects(username=current_user.username).first(), author_name=current_user.username,
-                        create_time=datetime.utcnow())
-            post.save()
-            flash('Created successfully.')
-            return redirect(url_for('post_main.post_view'))
-    return render_template("post/new_post.html", form=form)
-
 
 @post_main.route('/post/<string:post_id>', methods=['GET', 'POST'])
 def post_detail(post_id=''):
@@ -58,29 +42,33 @@ def post_detail(post_id=''):
     return render_template('post/post_detail.html', post=post, form=form)
 
 
-@post_main.route('/new_pic_post', methods=['GET', 'POST'])
+@post_main.route('/new_post', methods=['GET', 'POST'])
 @login_required
-def new_pic_post():
+def new_post():
     form = pic_post_form(request.form)
+    
     if request.method == "POST":
+        
         if form.validate_on_submit() and current_user.is_authenticated:
-            pic = request.files['pic']
-            fname = pic.filename
-
-            UPLOAD_FOLDER = current_app.config['UPLOAD_FOLDER']
-            ALLOWED_EXTENSIONS=['png','jpg','jpeg','gif']
-            flag = '.' in fname and fname.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
-            if not flag:
-                flash('file type error')
-                return render_template("post/new_pic_post.html", form=form)
-            save_name=generate_password_hash(fname)
-            pic.save('{}{}'.format(UPLOAD_FOLDER,fname))
-            pic_pos = '\\static\\post_pic\\{}'.format(fname)
             post = Blog(content=form.content.data,post_id=generate_password_hash(form.content.data),
                         author=User.objects(username=current_user.username).first(), author_name=current_user.username,
                         create_time=datetime.utcnow())
-            post.pic = pic_pos
+            if request.files['pic']:
+                pic = request.files['pic']
+                fname = pic.filename
+                ALLOWED_EXTENSIONS=['png','jpg','jpeg','gif']
+                UPLOAD_FOLDER = current_app.config['UPLOAD_FOLDER']
+                if  not (os.path.isdir(os.path.join(UPLOAD_FOLDER,current_user.username))):
+                    os.mkdir(os.path.join(UPLOAD_FOLDER,current_user.username))
+                flag = '.' in fname and fname.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
+                if not flag:
+                    flash('file type error')
+                    return render_template("post/new_pic_post.html", form=form)
+                save_name=generate_password_hash(fname)
+                pic.save('{}{}\\{}'.format(UPLOAD_FOLDER,current_user.username,fname))
+                pic_pos = '\\static\\post_pic\\{}\\{}'.format(current_user.username,fname)
+                post.pic = pic_pos
             post.save()
             flash('Created successfully.')
             return redirect(url_for('post_main.post_view'))
-    return render_template("post/new_pic_post.html", form=form)
+    return render_template("post/new_post.html", form=form)

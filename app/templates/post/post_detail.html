@@ -11,6 +11,9 @@
                 <p>{{ post.author.username }}说:</p>
                 <small>{{ moment(post.create_time).format('LLL') }}</small>
                 <h3>{{ post.content }}</h3>
+                {%if post.pic%}
+                <img src="{{post.pic}}" style="200px;width: 200px">
+                {% endif%}
                 {% for comment in post.comments %}
                     <div class="list-group-item">
                         <p style="margin: 0 0 0 0">{{ comment.author_name }}评论:</p>

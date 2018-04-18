@@ -11,7 +11,7 @@
                                     <h4 id="title">{{ diary.author.username }}说: </h4>
                                     <p id=diary-content>{{ diary.content }}</p>
                                     {%if diary.pic%}
-                                    <img src="{{diary.pic}}" style="100px;width: 100px">
+                                    <img src="{{diary.pic}}" style="200px;width: 200px">
                                     {% endif%}
                                     <p id=diary-time
                                        style="padding-top:5px; font-size:5px;color:gray">{{ moment(diary.create_time).format('LLL') }}</p>

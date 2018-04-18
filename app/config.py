@@ -22,6 +22,7 @@ class DevelopmentConfig(Config):
         'port': 27017
     }
     UPLOAD_FOLDER =os.getcwd()+'\\app\\static\\post_pic\\'
+    
 
 class TestingConfig(Config):
     TESTING = True

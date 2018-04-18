@@ -64,9 +64,10 @@ def new_post():
                 if not flag:
                     flash('file type error')
                     return render_template("post/new_pic_post.html", form=form)
-                save_name=generate_password_hash(fname)
-                pic.save('{}{}\\{}'.format(UPLOAD_FOLDER,current_user.username,fname))
-                pic_pos = '\\static\\post_pic\\{}\\{}'.format(current_user.username,fname)
+                #pic.save('{}{}\\{}'.format(UPLOAD_FOLDER,current_user.username,fname))#windows目录
+                pic.save('{}{}/{}'.format(UPLOAD_FOLDER,current_user.username,fname))#linux目录
+                #pic_pos = '\\static\\post_pic\\{}\\{}'.format(current_user.username,fname)#windows目录
+                pic_pos = '/static/post_pic/{}/{}'.format(current_user.username,fname)#linux目录
                 post.pic = pic_pos
             post.save()
             flash('Created successfully.')

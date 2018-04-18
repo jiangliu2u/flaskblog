@@ -15,7 +15,8 @@
 {% block content %}
     <div class="container">
     {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-    <div class="col-md-4">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
         <form class="form form-horizontal" action='{{ url_for('post_main.new_post') }}' method='POST' enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             {{ wtf.form_errors(form, hiddens="only") }}
@@ -24,5 +25,6 @@
             {{ wtf.form_field(form.submit) }}
         </form>
     </div>
+    <div class="col-lg-2"></div>
     <div>
 {% endblock %}

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from werkzeug.security import generate_password_hash, check_password_hash
-from wtforms import StringField, SubmitField, TextField, PasswordField, BooleanField, TextAreaField
+from wtforms import StringField, SubmitField, TextField, PasswordField, BooleanField, TextAreaField,FileField
 from wtforms.validators import DataRequired, Length, EqualTo, URL
 from wtforms import ValidationError
 from app.models import User
@@ -25,6 +25,12 @@ class login_form(FlaskForm):
 
 class post_form(FlaskForm):
     content = TextAreaField('微博内容', [DataRequired()])
+    #pic = FileField('图片')
+    submit = SubmitField('发布')
+
+class pic_post_form(FlaskForm):
+    content = TextAreaField('微博内容', [DataRequired()])
+    pic = FileField()
     submit = SubmitField('发布')
 
 

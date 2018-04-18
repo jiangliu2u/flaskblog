@@ -10,6 +10,9 @@
                                 <div id='blog' class="list-group-item" style="margin-top: 5px">
                                     <h4 id="title">{{ diary.author.username }}说: </h4>
                                     <p id=diary-content>{{ diary.content }}</p>
+                                    {%if diary.pic%}
+                                    <img src="{{diary.pic}}" style="100px;width: 100px">
+                                    {% endif%}
                                     <p id=diary-time
                                        style="padding-top:5px; font-size:5px;color:gray">{{ moment(diary.create_time).format('LLL') }}</p>
                                     <a href="{{ url_for('post_main.post_detail',post_id=diary.post_id) }}">评论({{ diary.comments|length }})</a>

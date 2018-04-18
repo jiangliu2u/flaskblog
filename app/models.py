@@ -66,6 +66,7 @@ class Blog(mongo.Document):
     }
     post_id = mongo.StringField(max_length=250, required=True)  # use uuid4
     content = mongo.StringField(required=True)
+    pic = mongo.StringField()
     author = mongo.ReferenceField(User, reverse_delete_rule=CASCADE)
     author_name = mongo.StringField(required=True)
     create_time = mongo.DateTimeField()

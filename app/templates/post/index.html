@@ -1,8 +1,4 @@
 {% extends "layout.html" %} {% block title %} 首页 {% endblock %} 
-{% block head %} {{ super() }}
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/showIMG.css')}}" >
-	<script type="text/javascript" src="{{url_for('static',filename='js/showIMG.min.js')}}"></script>
-{% endblock %}
 {% block content %} {{ super() }}
     <div>
         <div class="container">
@@ -16,7 +12,7 @@
                                     <h4 id="title">{{ diary.author.username }}说: </h4>
                                     <p id=diary-content>{{ diary.content }}</p>
                                     {%if diary.pic%}
-                                    <img src="{{diary.pic}}" style="100px;width: 100px">
+                                    <img src="{{diary.pic}}" style="200px;width: 200px">
                                     {% endif%}
                                     <p id=diary-time
                                        style="padding-top:5px; font-size:5px;color:gray">{{ moment(diary.create_time).format('LLL') }}</p>
@@ -33,15 +29,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-{% block scripts %}
-{{super()}}
-<script type="text/javascript">
-    new showIMG({
-			boxClass: 'boxClass',
-			showTitle: true,
-			useMouse: true,
-			useKeyboard: true
-		});
-</script>
 {% endblock %}

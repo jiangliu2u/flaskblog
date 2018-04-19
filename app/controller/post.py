@@ -64,9 +64,9 @@ def new_post():
                 if not flag:
                     flash('file type error')
                     return render_template("post/new_pic_post.html", form=form)
-                #pic.save('{}{}\\{}'.format(UPLOAD_FOLDER,current_user.username,fname))#windows目录
+                # pic.save('{}{}\\{}'.format(UPLOAD_FOLDER,current_user.username,fname))#windows目录
                 pic.save('{}{}/{}'.format(UPLOAD_FOLDER,current_user.username,fname))#linux目录
-                #pic_pos = '\\static\\post_pic\\{}\\{}'.format(current_user.username,fname)#windows目录
+                # pic_pos = '\\static\\post_pic\\{}\\{}'.format(current_user.username,fname)#windows目录
                 pic_pos = '/static/post_pic/{}/{}'.format(current_user.username,fname)#linux目录
                 post.pic = pic_pos
             post.save()

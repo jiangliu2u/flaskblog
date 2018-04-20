@@ -58,6 +58,8 @@ def new_post():
                 fname = pic.filename
                 ALLOWED_EXTENSIONS=['png','jpg','jpeg','gif']
                 UPLOAD_FOLDER = current_app.config['UPLOAD_FOLDER']
+                if  not (os.path.isdir(os.path.join(UPLOAD_FOLDER))):
+                    os.mkdir(os.path.join(UPLOAD_FOLDER))
                 if  not (os.path.isdir(os.path.join(UPLOAD_FOLDER,current_user.username))):
                     os.mkdir(os.path.join(UPLOAD_FOLDER,current_user.username))
                 flag = '.' in fname and fname.rsplit('.',1)[1] in ALLOWED_EXTENSIONS

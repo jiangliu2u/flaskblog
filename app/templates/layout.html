@@ -1,4 +1,8 @@
 {% extends "bootstrap/base.html" %}
+{% block head %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('static',filename='css/zoomify.css')}}">
+{% endblock %}
 {% block title %}Base{% endblock %}
 {% block navbar %}
     <nav class="navbar navbar-static-top navbar-inverse">
@@ -49,4 +53,10 @@
     {{ super() }}
     {{ moment.include_moment() }}
     {{ moment.lang("zh-CN") }}
+    <script src="{{url_for('static',filename='js/zoomify.js')}}"></script>
+    <script>
+    $(function() {  
+        $('img').zoomify();  
+    });
+    </script>
 {% endblock %}

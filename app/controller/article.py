@@ -17,7 +17,6 @@ def new_article():
             article = Article(content=form.content.data,
                               author=User.objects(username=current_user.username).first(),
                               author_name=current_user.username, title=form.title.data, create_time=datetime.utcnow())
-            article.article_id = generate_password_hash(article.title)
             article.save()
             flash('Created successfully.')
             return redirect(url_for('main.index'))
@@ -26,5 +25,5 @@ def new_article():
 
 @article_main.route('/article/<string:article_id>', methods=['GET'])
 def article_detail(article_id=''):
-    article = Article.objects(article_id=article_id).first()
+    article = Article.objects(id=article_id).first()
     return render_template('article/article_detail.html', article=article)

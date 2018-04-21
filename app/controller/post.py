@@ -14,17 +14,12 @@ post_main = Blueprint('post_main', __name__)
 def post_view():
     User.objects(username = current_user.username).first().update(last_login_at = datetime.utcnow())
     posts = Blog.objects.all().order_by('-create_time')
-    for i in posts:
-        if i.post_id == '':
-            i.update(post_id=generate_password_hash(i.content))
-    for i in posts:
-        if i.author_name == '':
-            i.update(author_name=i.author.username)
     return render_template('post/index.html', diaries=posts)
 
 @post_main.route('/post/<string:post_id>', methods=['GET', 'POST'])
 def post_detail(post_id=''):
-    post = Blog.objects(post_id=post_id).first()
+    post = Blog.objects(id=post_id).first()
+    print(post.id)
     print(post, 'aaaaaaaaaaaaaaaaa')
     form = comment_form(request.form)
     if request.method == 'POST':

@@ -45,9 +45,7 @@ def new_post():
     if request.method == "POST":
         
         if form.validate_on_submit() and current_user.is_authenticated:
-            post = Blog(content=form.content.data,post_id=generate_password_hash(form.content.data),
-                        author=User.objects(username=current_user.username).first(), author_name=current_user.username,
-                        create_time=datetime.utcnow())
+            post = Blog(content=form.content.data,author=User.objects(username=current_user.username).first(), author_name=current_user.username,create_time=datetime.utcnow())
             if request.files['pic']:
                 pic = request.files['pic']
                 fname = pic.filename
@@ -61,9 +59,7 @@ def new_post():
                 if not flag:
                     flash('file type error')
                     return render_template("post/new_pic_post.html", form=form)
-                # pic.save('{}{}\\{}'.format(UPLOAD_FOLDER,current_user.username,fname))#windows目录
                 pic.save('{}{}/{}'.format(UPLOAD_FOLDER,current_user.username,fname))#linux目录
-                # pic_pos = '\\static\\post_pic\\{}\\{}'.format(current_user.username,fname)#windows目录
                 pic_pos = '/static/post_pic/{}/{}'.format(current_user.username,fname)#linux目录
                 post.pic = pic_pos
             post.save()

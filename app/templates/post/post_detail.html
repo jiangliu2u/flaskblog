@@ -14,6 +14,14 @@
                 {%if post.pic%}
                 <img src="{{post.pic}}" style="200px;width: 200px">
                 {% endif%}
+
+                <br>
+                {% if post.liked_by %}
+                {% for u in post.liked_by %}
+                    <a href="#">{{ u }}</a>
+                {% endfor %}
+                <span>赞了这条微博</span>
+                {% endif %}
                 {% for comment in post.comments %}
                     <div class="list-group-item">
                         <p style="margin: 0 0 0 0">{{ comment.author_name }}评论:</p>
@@ -23,7 +31,7 @@
                 {% endfor %}
                 <br>
                 <br>
-                <form class="form form-horizontal" action='{{ url_for('post_main.post_detail',post_id=post.post_id) }}'
+                <form class="form form-horizontal" action='{{ url_for('post_main.post_detail',post_id=post.id) }}'
                       method='POST'>
                     {{ form.hidden_tag() }}
                     {{ wtf.form_errors(form, hiddens="only") }}

@@ -1,5 +1,4 @@
-{% extends "layout.html" %} {% block title %} 首页 {% endblock %} 
-{% block content %} {{ super() }}
+{% extends "layout.html" %} {% block title %} 首页 {% endblock %} {% block content %} {{ super() }}
     <div>
         <div class="container">
             <div class="row">
@@ -7,22 +6,48 @@
                 <div class="col-lg-8">
                     {% if diaries %}
                         <ul class="list-group">
-                            {% for diary in diaries %}
+                            {% for diary in diaries.items %}
                                 <div id='blog' class="list-group-item" style="margin-top: 5px">
                                     <h4 id="title">{{ diary.author.username }}说: </h4>
                                     <p id=diary-content>{{ diary.content }}</p>
-                                    {%if diary.pic%}
-                                    <img src="{{diary.pic}}" style="200px;width: 200px">
-                                    {% endif%}
+                                    {% if diary.pic %}
+                                        <img src="{{ diary.pic }}" style="200px;width: 200px"> {% endif %}
                                     <p id=diary-time
                                        style="padding-top:5px; font-size:5px;color:gray">{{ moment(diary.create_time).format('LLL') }}</p>
-                                    <a href="{{ url_for('post_main.post_detail',post_id=diary.id) }}">评论({{ diary.comments|length }})</a>
+                                    {% if diary.id|string in current_user.love %}
+                                        <span class="btn-like glyphicon glyphicon-thumbs-up" id="{{ diary.id }}" flag="1" style="color: red"></span>
+                                    {% else %}
+                                        <span class="btn-like glyphicon glyphicon-thumbs-up" id="{{ diary.id }}" flag="0"></span>
+                                    {% endif %}
+                                    <a href="{{ url_for('post_main.post_detail',post_id=diary.id) }}">&nbsp&nbsp评论({{ diary.comments|length }})</a>
                                 </div>
                             {% endfor %}
                         </ul>
+                        {# Macro for creating navigation links #}
+                        {% macro render_navigation(pagination, endpoint) %}
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    {% for page in pagination.iter_pages() %}
+                                        {% if page %}
+                                            {% if page != pagination.page %}
+                                                <li><a href="{{ url_for(endpoint, page=page) }}">{{ page }}</a></li>
+                                            {% else %}
+                                                <li class="active"><a href="#">{{ page }}</a></li>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class=ellipsis>…</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </nav>
+                        {% endmacro %}
+                        <div class="Page navigation">
+                            {{ render_navigation(diaries, 'post_main.post_view') }}
+                        </div>
                     {% else %}
-                        <p>No post are available.</p>
+                        <p>赶紧发第一条微博吧</p>
                     {% endif %}
+
                 </div>
                 <div class="col-lg-2"></div>
 
@@ -30,6 +55,23 @@
         </div>
     </div>
 {% endblock %}
-{% block scripts %}
-    {{ super() }}
+{% block scripts %} {{ super() }}
+    <script src="{{ url_for('static',filename='js/like.js') }}"></script>
+{#    <script>#}
+{#        $(".btn-liked").unbind('click').click(function () {#}
+{#            const a = $(this);#}
+{#            $.ajax({#}
+{#                type: 'POST',#}
+{#                url: '/unlike',#}
+{#                data: {id: a.prop('id')},#}
+{#                success: function (data) {#}
+{#                    console.log(data)#}
+{#                },#}
+{#            });#}
+{#            $(this).text("赞");#}
+{#            $(this).removeClass("btn-liked");#}
+{#            $(this).addClass("btn-like");#}
+{##}
+{#        });#}
+{#    </script>#}
 {% endblock %}

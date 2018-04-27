@@ -1,19 +1,20 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from mongoengine import *
 from .extensions import mongo
 
 
-class User(Document, UserMixin):
-    username = StringField(required=True)
-    password_hash = StringField(required=True)
-    authenticated = BooleanField(default=False)
-    isAdmin = BooleanField(default=False)
-    last_login_at = DateTimeField()
-    authenticated = BooleanField(default=False)
-    isAdmin = BooleanField(default=False)
+class User(mongo.Document, UserMixin):
+    username = mongo.StringField(required=True)
+    password_hash = mongo.StringField(required=True)
+    authenticated = mongo.BooleanField(default=False)
+    isAdmin = mongo.BooleanField(default=False)
+    last_login_at = mongo.DateTimeField()
+    love = mongo.ListField(mongo.StringField())
+    authenticated = mongo.BooleanField(default=False)
+    isAdmin = mongo.BooleanField(default=False)
     meta = {
-        'collection': 'user'
+        'collection': 'user',
+        'strict': False
     }
 
     @property
@@ -50,39 +51,44 @@ class User(Document, UserMixin):
         return check_password_hash(self.password_hash, password)
 
 
-class Comment(EmbeddedDocument):
-    comment_id = StringField(max_length=250, required=True)
-    content = StringField(required=True)
-    author = ReferenceField(User)
-    author_name = StringField(required=True)
-    create_time = DateTimeField()
+
+
+class Comment(mongo.EmbeddedDocument):
+    comment_id = mongo.StringField(max_length=250, required=True)
+    content = mongo.StringField(required=True)
+    author = mongo.ReferenceField(User)
+    author_name = mongo.StringField(required=True)
+    create_time = mongo.DateTimeField()
+
     def __repr__(self):
         return '<Comment %r>' % (self.content)
 
-class Blog(Document):
+
+class Blog(mongo.Document):
     meta = {
-        'collection': 'post'
+        'collection': 'post',
+        'strict': False
     }
-    content = StringField(required=True)
-    pic = StringField()
-    author = ReferenceField(User, reverse_delete_rule=CASCADE)
-    author_name = StringField(required=True)
-    create_time = DateTimeField()
-    comments = EmbeddedDocumentListField('Comment')
-
+    content = mongo.StringField(required=True)
+    pic = mongo.StringField()
+    author = mongo.ReferenceField(User)
+    author_name = mongo.StringField(required=True)
+    create_time = mongo.DateTimeField()
+    comments = mongo.EmbeddedDocumentListField('Comment')
+    liked_by = mongo.ListField(mongo.StringField())
     def __repr__(self):
-        return '<Post %r>' % (self.title)
+        return '<Post %r>' % (self.content)
 
 
-class Article(Document):
+class Article(mongo.Document):
     meta = {
         'collection': 'article',
     }
-    title = StringField(required=True)
-    content = StringField(required=True)
-    author = ReferenceField(User, reverse_delete_rule=CASCADE)
-    author_name = StringField(required=True)
-    create_time = DateTimeField()
+    title = mongo.StringField(required=True)
+    content = mongo.StringField(required=True)
+    author = mongo.ReferenceField(User)
+    author_name = mongo.StringField(required=True)
+    create_time = mongo.DateTimeField()
 
     def __repr__(self):
         return '<Article %r>' % (self.title)

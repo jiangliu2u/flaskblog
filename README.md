@@ -1,7 +1,6 @@
-# flaskblog
+#个人博客
 
-采用mongodb作为数据库
-### 功能：
+## 功能：
 1. 用户注册/登录
 2. 发表 删除微博，可带图片 点赞功能
 3. 写博客
@@ -9,7 +8,7 @@
 
 ## 服务器部署步骤
 部署到服务器采用的是nginx和uwsgi，nginx配置时可加https，此处略过，我的服务器版本为ubuntu16.04
-####1. uwsgi配置文件为flaskblog_uwsgi.ini，放在flaskblog目录下,如下:
+### 1. uwsgi配置文件为flaskblog_uwsgi.ini，放在flaskblog目录下,如下:
 <pre>
 [uwsgi]
 socket = 127.0.0.1:5051 //项目运行的本地地址端口
@@ -21,7 +20,7 @@ processes = 4
 threads = 2
 daemonize = /root/src/flaskblog/server.log //日志文件</pre>
 
-####2. nginx配置文件nginx_flask.conf如下：
+### 2. nginx配置文件nginx_flask.conf如下：
 <pre>
 server{
     listen 80;

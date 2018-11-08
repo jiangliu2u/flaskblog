@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash,jsonify
 from app.models import Blog, User
 from flask_login import login_user, current_user, fresh_login_required, logout_user
 from app.form import login_form
 from datetime import datetime
-
+from bson import json_util
+import json
 auth = Blueprint('auth', __name__)
 
 
@@ -50,3 +51,28 @@ def logout():
     elif not current_user.is_autheticated:
         flash('You were not logged in.')
     return redirect(url_for('main.index'))
+
+
+
+class Auth():
+    def error_handler(self, e):
+        print(e)
+        return "Something bad happened", 400
+
+    def authenticate(self, username, password):
+        print(1)
+        userInfo =User.objects(username=username).first()
+        if (userInfo is None):
+            self.error_handler('找不到用户')
+        else:
+            if (userInfo.check_password(password)):
+                # User.update()
+                print(2)
+                return userInfo
+            else:
+                self.error_handler('密码不正确')
+
+    def identity(self, payload):
+        print(3)
+        id = jsonify(payload['identity'])
+        return User.get(id)

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash,jsonify
 from app.models import User, Article
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
@@ -27,3 +27,8 @@ def new_article():
 def article_detail(article_id=''):
     article = Article.objects(id=article_id).first()
     return render_template('article/article_detail.html', article=article)
+
+@article_main.route('/article/api/all', methods=['GET'])
+def api_all():
+    articles = Article.objects.all()
+    return jsonify(articles)

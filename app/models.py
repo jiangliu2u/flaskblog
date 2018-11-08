@@ -41,8 +41,13 @@ class User(mongo.Document, UserMixin):
     def is_anonymous(self):
         return False
 
+    @staticmethod
     def get_id(self):
         return str(self.username)
+
+    @staticmethod
+    def get(id):
+        return User.objects(id=id).first()
 
     def __repr__(self):
         return '<User {}>'.format(self.username)

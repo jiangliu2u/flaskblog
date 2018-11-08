@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash
 from app.form import post_form, comment_form, pic_post_form
 from datetime import datetime
 import os
+from flask_jwt import jwt_required, current_identity
 
 post_main = Blueprint('post_main', __name__)
 
@@ -14,8 +15,14 @@ post_main = Blueprint('post_main', __name__)
 def post_view():
     User.objects(username=current_user.username).first().update(last_login_at=datetime.utcnow())
     page_num = int(request.args.get('page') or 1)
-    posts = Blog.objects.order_by('-create_time').paginate(page=page_num, per_page=1)
+    posts = Blog.objects.order_by('-create_time').paginate(page=page_num, per_page=10)
     return render_template('post/index.html', diaries=posts)
+
+@post_main.route('/post/api/all')
+@jwt_required()
+def posts():
+    posts = Blog.objects.all()
+    return jsonify(posts)
 
 
 @post_main.route('/post/<string:post_id>', methods=['GET', 'POST'])

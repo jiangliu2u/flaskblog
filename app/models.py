@@ -4,7 +4,7 @@ from .extensions import mongo
 
 
 class User(mongo.Document, UserMixin):
-    username = mongo.StringField(required=True)
+    username = mongo.StringField(required=True, unique=True)
     password_hash = mongo.StringField(required=True)
     authenticated = mongo.BooleanField(default=False)
     isAdmin = mongo.BooleanField(default=False)
@@ -56,8 +56,6 @@ class User(mongo.Document, UserMixin):
         return check_password_hash(self.password_hash, password)
 
 
-
-
 class Comment(mongo.EmbeddedDocument):
     comment_id = mongo.StringField(max_length=250, required=True)
     content = mongo.StringField(required=True)
@@ -81,6 +79,7 @@ class Blog(mongo.Document):
     create_time = mongo.DateTimeField()
     comments = mongo.EmbeddedDocumentListField('Comment')
     liked_by = mongo.ListField(mongo.StringField())
+
     def __repr__(self):
         return '<Post %r>' % (self.content)
 

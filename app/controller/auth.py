@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash,jsonify
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
 from app.models import Blog, User
 from flask_login import login_user, current_user, fresh_login_required, logout_user
 from app.form import login_form
 from datetime import datetime
 from bson import json_util
 import json
+
 auth = Blueprint('auth', __name__)
 
 
@@ -26,18 +27,30 @@ def login():
     return render_template('auth/login.html', form=form)
 
 
-# @auth.route('/reg', methods=['GET', 'POST'])
-# def register():
-#     form = reg_form(request.form)
-#     if request.method == 'POST':
-#         if form.validate_on_submit():
-#             new_user = User(username=form.username.data)
-#             new_user.password = form.password.data
-#             print(new_user.password_hash)
-#             new_user.save()
-#             return redirect(url_for("main.index"))
-#
-#     return render_template('register.html', form=form)
+@auth.route('/api/reg', methods=['POST'])
+def register():
+    jsondata = request.get_json()
+
+    if jsondata['username'] and jsondata['password']:
+        if User.objects(username=jsondata['username']):
+            return jsonify("username already exists")
+        else:
+            username = jsondata['username']
+            password = jsondata['password']
+            user = User(username=username)
+            user.password = password
+            user.save()
+            if user.id:
+                returnUser = {
+                    'id': str(user.id),
+                    'username': user.username,
+                }
+                return jsonify({"user": returnUser, "msg": "用户注册成功"})
+            else:
+                return jsonify('用户注册失败')
+
+    else:
+        return jsonify('请输入用户名或者密码')
 
 
 @auth.route('/logout')
@@ -53,26 +66,22 @@ def logout():
     return redirect(url_for('main.index'))
 
 
-
 class Auth():
     def error_handler(self, e):
         print(e)
         return "Something bad happened", 400
 
     def authenticate(self, username, password):
-        print(1)
-        userInfo =User.objects(username=username).first()
+        userInfo = User.objects(username=username).first()
+        userInfo.id = str(userInfo.id)  # 把用户id转化为string，ObjectId不能序列化
         if (userInfo is None):
             self.error_handler('找不到用户')
         else:
             if (userInfo.check_password(password)):
-                # User.update()
-                print(2)
                 return userInfo
             else:
                 self.error_handler('密码不正确')
 
     def identity(self, payload):
-        print(3)
         id = jsonify(payload['identity'])
         return User.get(id)
